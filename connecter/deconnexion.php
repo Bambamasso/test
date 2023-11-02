@@ -16,5 +16,7 @@ if(!empty($_SESSION['user_id'])){
         unset($_SESSION['user_id']);
         header('LOCATION:../connexion.php');
     }
+}else{
+    header('LOCATION:../connexion.php'); 
 }
    ?>
