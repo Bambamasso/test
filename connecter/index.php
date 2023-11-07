@@ -56,66 +56,110 @@ $important=mysqli_fetch_all($query, MYSQLI_ASSOC);
     <link type="text/css" rel="stylesheet" href="./accueil.css">
 </head>
 <body>
- <div>
-    <nav>
-      <p>GstTâche</p>
-        <ul>
-          <li><a href="./index.php">accueil</a></li>
-          <?php foreach($important as $value) :?>
-               
-          <li><a href="./categorie.php?idprio=<?php echo $value['id'] ?>"><?php echo $value['type']?></a></li>
-             
-         <?php endforeach; ?>
-         <li><a href="./deconnexion.php">Deconnexion</a></li>
-      </ul>
-    </nav>
+<div class="sidebar">
+   <div class="logo"></div>
+    <ul class="menu">
+      <li class="active">
+        <a href="">
+          <img src="../image/dashboard.png" alt="icone">
+          <span>Dashboard</span>
+        </a>
+       
+      </li>
+      <li>
+        <a href="">
+          <img src="" alt="icone">
+          <span>Profile</span>
+       </a>
+        
+      </li>
+      <li>
+        <a href="">
+          <img src="" alt="icone">
+          <span>Tri</span>
+       </a>
+       
+      </li>
+      <li>
+        <a href=""><img src="" alt="icone">
+        <span>Dashboard</span></a>
+       
+      </li>
+      <li class="logout">
+        <a href="./deconnexion.php"><img src="../image/exit.png" alt="icone">
+        <span >Deconnexion</span>
+      </a>
+       
+      </li>
+    </ul>
   </div>
 
-  <section>
-    <p>Bienvenue <?php echo $user['nom'];?> sur votre dashborde ou vous allez renseigné vos differents tâche quotidienne</p>
-    <div class="a"><a href="./ajouter.php">Ajouter une tâche</a></div>
-    <div class="contenus">
-      <div class="table">
-      
-        <table> 
-          <thead>
-            <th>Titre</th>
-            <th>Description</th>
-            <th>Date d'échéance</th>
-            <th>Priorité</th>
-            <th colspan="3">action</th>
-           
-          </thead>
-          <tbody>
-            <?php foreach( $voir as $value):?>
-            <tr>
-              <td> <?php echo $value['titre']?></td> 
-              <td><?php echo $value['description']?></td> 
-              <td>
-               <?php echo $value['date'];
-                       
-               if($value['date'] < $date){
-                echo "tache en retard";
-                }
-               ?>
+  <div class="main--content">
+    <div class="header--wrapper">
+      <div class="header--title">
+        <span>Primary</span>
+          <h2>Dashboard</h2>
+
+        </div>
+        <div class="user--info">
+          <img src="" alt="profile">
+        </div>
+    </div>
+    <p>Bienvenue <?php echo $user['nom'];?> sur votre dashbord ou vous allez renseigné vos differents tâche quotidienne</p>
+    <div class="inter">
+     
+      <div class="contenus">
+        <div class="table">
+        
+          <table> 
+            <thead>
+              <th>Titre</th>
+              <th>Description</th>
+              <th>Date d'échéance</th>
+              <th>Priorité</th>
+              <th>statut</th>
+              <th colspan="2">action</th>
+            
+            </thead>
+            <tbody>
+              <?php foreach( $voir as $value):?>
+              <tr>
+                <td> <?php echo $value['titre']?></td> 
+                <td><?php echo $value['description']?></td> 
+                <td>
+                <?php echo  date( 'd F Y', strtotime($value["date"]));
+                        
+                if($value['date'] < $date){
+                  echo "tache en retard";
+                  }
+                ?>
+                </td> 
+                <td><?php $value['id_categorie']?>
+                <?php foreach($important as $values) :?>
+                  <?php
+                    if($values['id']==$value['id_categorie'] ):?>
+                    <?php echo $values['type'];?>
+                    <?php endif;?>
+                <?php endforeach; ?>
               </td> 
-              <td value="<?php echo $value['id_categorie']?>">
-             
-            </td> 
-              <td><a style="text-decoration:none;" href="./suprimer.php?id=<?php echo $value['id']?>">Suprimer</a> </td>
-              <td><a href="modifier.php?id=<?php echo $value['id']?>">Modifier</a></td> 
-              <td> <button class="active" id="<?php echo $value['id']?>" onclick="statut(<?php echo $value['id']?>)"> terminée</button></td>
-            </tr>
-            <?php endforeach?>
-          </tbody> 
-        </table>
-              
+              <td> <button class="active<?php if($value['statut'] == "terminée"){echo " terminer";}?>" id="<?php echo $value['id']?>" onclick="statut(<?php echo $value['id']?>)"> <?php if($value['statut'] == "terminée"){echo " terminer";}else{echo "validé";}?></button></td>
+                <td><a style="text-decoration:none;" href="./suprimer.php?id=<?php echo $value['id']?>">Suprimer</a> </td>
+                <td><a href="modifier.php?id=<?php echo $value['id']?>">Modifier</a></td> 
+              </tr>
+              <?php endforeach?>
+            </tbody> 
+          </table>    
+        </div>
+
+      </div>
+       
+      <div class="a">
+       <a href="./ajouter.php">Ajouter une tâche</a>
       </div>
     </div>
-    <div>
-      <p><a href="./terminer.php">Afficher les taches déjà fait</a></p>
-    </div>
- </section>
+  </div>  
+
+  
 </body>
 <script>
   

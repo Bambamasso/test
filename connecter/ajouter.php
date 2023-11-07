@@ -26,11 +26,13 @@ if(!empty($_SESSION['user_id'])){
            
 
         $insert = "INSERT INTO taches(titre, description, date, id_categorie, user_id) ";
-        $insert .= "VALUES('$titre', '$description', '$date', '$priorite', '$idUtilisateur')";
-        $tache = mysqli_query($connexion, $insert);
+        $insert .= "VALUES(?, ?, ?, ?, ?)";
+        $tache = mysqli_prepare($connexion, $insert);
+        $requete=mysqli_stmt_bind_param($tache,"ssssi",  $titre, $description, $date, $priorite,$idUtilisateur);
+        mysqli_stmt_execute($tache);
 
-            if ($tache) {
-                echo "Bien";
+            if (mysqli_affected_rows($connexion)>0) {
+               header("LOCATION:index.php ");
             } else {
                 echo "Erreur : " . mysqli_error($connexion);
             }
@@ -59,16 +61,55 @@ $important=mysqli_fetch_all($query, MYSQLI_ASSOC);
 </head>
 <body>
 
-<div>
-        <nav>
-            <p>GstTâche</p>
-            <ul>
-                <li><a href="./index.php">accueil</a></li>
-                <li><a href="./deconnexion.php">Deconnexion</a></li>
-            </ul>
-        </nav>
-    </div>
- <div class="form">
+<div class="sidebar">
+   <div class="logo"></div>
+    <ul class="menu">
+      <li class="active">
+        <a href="./index.php">
+          <img src="../image/dashboard.png" alt="icone">
+          <span>Dashboard</span>
+        </a>
+       
+      </li>
+      <li>
+        <a href="">
+          <img src="" alt="icone">
+          <span>Profile</span>
+       </a>
+        
+      </li>
+      <li>
+        <a href="">
+          <img src="" alt="icone">
+          <span>Tri</span>
+       </a>
+       
+      </li>
+      <li>
+        <a href=""><img src="" alt="icone">
+        <span>Dashboard</span></a>
+       
+      </li>
+      <li class="logout">
+        <a href="./deconnexion.php"><img src="../image/exit.png" alt="icone">
+        <span >Deconnexion</span>
+      </a>
+       
+      </li>
+    </ul>
+  </div>
+  <div class="main--content">
+        <div class="header--wrapper">
+        <div class="header--title">
+            <span>Primary</span>
+            <h2>Dashboard</h2>
+
+            </div>
+            <div class="user--info">
+            <img src="" alt="profile">
+            </div>
+        </div>
+        <div class="form">
       <div class="contenu">
           <form action="" method="post">
 
@@ -101,5 +142,7 @@ $important=mysqli_fetch_all($query, MYSQLI_ASSOC);
 
         </div>
    </div>
+   </div> 
+
 </body>
 </html>

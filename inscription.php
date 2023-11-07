@@ -4,39 +4,54 @@
     $nom=trim(strip_tags($_POST['nom']))  ;
     $email=trim(strip_tags($_POST['email']));
     $password=trim(strip_tags($_POST['password']));
-
-       if(empty($nom)|| strlen($nom)<3){
-        $message_nom="veillez revoir le nom svp";
-       }
-
-       if(empty($email) || strlen($email)<3){
-       $message_email="Ceci n'est pas une adresse email correcte";
-       }
-
-       if(empty($password)|| strlen($password)<3){
-        $message_password="veillez revoir le mot de passe svp";
-       }  
-     
-        if(!isset($message_nom) && !isset($message_email) && isset($message_password)){
-            $connexion=mysqli_connect('localhost', 'root', '', 'gestion');
-            if(!$connexion){
-            die("erreur");
-            }
         
-            $insert = "INSERT INTO users(nom, email, password) ";
-            $insert .= "VALUES('$nom', '$email', '$password')";
-        
-            $resultat = mysqli_query($connexion, $insert);
-        
-        if ($resultat) {
-           header ("LOCATION:./connexion.php");
-        } else {
-            // Erreur lors de l'exécution de la requête
-            // Vous pouvez gérer l'erreur ou afficher un message d'erreur
-            echo "Erreur : " . mysqli_error($connexion);
+    if(empty($nom) || strlen($nom)<3){
+    $message_nom="veillez revoir le nom svp";
+    }
+
+    if(empty($email) || strlen($email)<3){
+    $message_email="Ceci n'est pas une adresse email correcte";
+    }
+
+    if(empty($password)|| strlen($password)<3){
+    $message_password="veillez revoir le mot de passe svp";
+    }  
+    
+    if(!isset($message_nom) && !isset($message_email) && !isset($message_password)){
+
+        $connexion=mysqli_connect('localhost', 'root', '', 'gestion');
+        if(!$connexion){
+        die("erreur");
         }
+        
+        $select="SELECT * FROM users WHERE email='$email'";
+        $requet= mysqli_query($connexion,$select);
+        $affiche=mysqli_fetch_all($requet);
+        if($affiche){
+        $existe="Ce compte existe déjà";
+        //  echo "l'email existe déjà";
         }
 
+        else{
+         $insert = "INSERT INTO users(nom, email, password) ";
+         $insert .= "VALUES('$nom', '$email', '$password')";
+         $resultat = mysqli_query($connexion, $insert);
+         
+    
+     if ($resultat) {
+        
+        header ("LOCATION:./connexion.php");
+     } else {
+    //     // Erreur lors de l'exécution de la requête
+    //     // Vous pouvez gérer l'erreur ou afficher un message d'erreur
+        
+      echo "Erreur : " . mysqli_error($connexion);
+ }
+            
+        }
+    
+   
+    }
  }
 
 ?>
@@ -56,6 +71,9 @@
    <div class="contenu">
    <h2>Bienvenue sur la page de D'inscription</h2>
       <form action="" method="post">
+      <?php if(!empty($existe)){
+                echo "<p style='color:red'; >$existe</p>";
+            }?>
         <div class="group">
             <label for="">Nom</label>
             <input type="text" name="nom">
@@ -80,6 +98,7 @@
         </div>
 
         <input type="submit" value="S'inscrire">
+        
         <p>Vous avez un compte? <a href="./connexion.php">connectez-vous</a></p> 
       </form>
 

@@ -52,3 +52,10 @@ nav .inscription:hover{
 }
 
 /* nav .connexion{} */
+
+p{
+    text-align: center;
+    margin: 120px 50px;
+    font-size: 35px;
+    color: #9ff7f9;
+}

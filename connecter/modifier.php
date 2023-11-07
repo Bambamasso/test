@@ -31,16 +31,18 @@
         $date=$_POST['date'];
         $priorite=$_POST['priorite'];
 
-        $modif="UPDATE taches SET titre='$titre', description='$description', date='$date', id_categorie='$priorite' WHERE id= $idTache" ;
-        $query=mysqli_query($connexion, $modif);
-        if($query){
+        $modif="UPDATE taches SET titre=?, description=?, date=?, id_categorie=? WHERE id= ?" ;
+        $query=mysqli_prepare($connexion, $modif);
+        $stmt=mysqli_stmt_bind_param($query,"sssii",$titre, $description,$date, $priorite, $idTache );
+        mysqli_stmt_execute($query);
+
+        if(mysqli_affected_rows($connexion)>0){
             $tache="SELECT * FROM taches WHERE id= '$idTache' AND user_id='$idUtilisateur'"; 
            $query=mysqli_query($connexion,$tache);
            $affiche=mysqli_fetch_assoc($query);
 
            header("LOCATION: ./index.php");
             echo "modification validé";  
-
         }
       }
 
@@ -65,47 +67,90 @@
 </head>
 <body>
 
-<div>
-        <nav>
-            <p>GstTâche</p>
-            <ul>
-                <li><a href="./index.php">accueil</a></li>
-                <li><a href="./deconnexion.php">Deconnexion</a></li>
-            </ul>
-        </nav>
+<div class="sidebar">
+   <div class="logo"></div>
+    <ul class="menu">
+      <li class="active">
+        <a href="./index.php">
+          <img src="../image/dashboard.png" alt="icone">
+          <span>Dashboard</span>
+        </a>
+       
+      </li>
+      <li>
+        <a href="">
+          <img src="" alt="icone">
+          <span>Profile</span>
+       </a>
+        
+      </li>
+      <li>
+        <a href="">
+          <img src="" alt="icone">
+          <span>Tri</span>
+       </a>
+       
+      </li>
+      <li>
+        <a href=""><img src="" alt="icone">
+        <span>Dashboard</span></a>
+       
+      </li>
+      <li class="logout">
+        <a href="./deconnexion.php"><img src="../image/exit.png" alt="icone">
+        <span >Deconnexion</span>
+      </a>
+       
+      </li>
+    </ul>
+  </div>
+
+  <div class="main--content">
+   <div class="header--wrapper">
+      <div class="header--title">
+        <span>Primary</span>
+        <h2>Dashboard</h2>
+
+      </div>
+      <div class="user--info">
+        <img src="" alt="profile">
+      </div>
     </div>
-  <div class="form">
-  <div class="contenu">
-       <form action="" method="post">
+    <div class="form">
+    <div class="contenu">
+      <form action="" method="post">
 
-       <div class="group">
-            <label for="">Titre</label>
-            <input type="text" name="titre" value="<?php echo $affiche ['titre'];?>">
-       </div>
+        <div class="group">
+          <label for="">Titre</label>
+          <input type="text" name="titre" value="<?php echo $affiche ['titre'];?>">
+        </div>
 
-       <div class="group">
-            <label for="">Description</label>
-           <textarea  id="" cols="30" rows="10" name="description"><?php echo $affiche ['description']?></textarea>
-       </div>
+        <div class="group">
+          <label for="">Description</label>
+          <textarea  id="" cols="30" rows="10" name="description"><?php echo $affiche ['description']?></textarea>
+        </div>
 
-       <div class="group">
-            <label for="">Date d'échéance</label>
-            <input type="date" name="date" value="<?php echo $affiche ['date'];?>" >
-       </div>
+        <div class="group">
+          <label for="">Date d'échéance</label>
+          <input type="date" name="date" value="<?php echo $affiche ['date'];?>" >
+        </div>
 
-       <div class="group">
-            <label for="">Priorité</label>
+        <div class="group">
+          <label for="">Priorité</label>
             <select name="priorite" id="">
-                <?php foreach($important as $value) :?>
-               <option value="<?php echo $value['id']?>"><?php echo $value['type']?></option>
-               <?php endforeach; ?>
+              <?php foreach($important as $value) :?>
+              <option value="<?php echo $value['id']?>"><?php echo $value['type']?></option>
+              <?php endforeach; ?>
             </select>
-       </div>
+        </div>
 
-       <input type="submit" value="Enregistrer">
-       </form>
+        <input type="submit" value="Enregistrer">
+      </form>
 
     </div>
   </div>
+
+  </div>
+  
 </body>
 </html>

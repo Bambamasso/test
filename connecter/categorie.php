@@ -37,6 +37,16 @@ if(!empty ($_GET['idprio'])){
      
     $voir=mysqli_fetch_all($requete, MYSQLI_ASSOC);
   //  var_dump($voir);
+
+  if(!empty($_GET['statut_id'])){
+    $idStatur=$_GET['statut_id'];
+
+   $modifie="UPDATE taches SET statut='terminée' WHERE id=$idStatur AND user_id='$idUtilisateur' " ;
+   $stat=mysqli_query($connexion, $modifie);
+   if(!$stat){
+    die("erreur");
+   }
+  }
    }
 }else{
   die("erreur");
@@ -93,7 +103,7 @@ if(!empty ($_GET['idprio'])){
                 <td><?php echo $value['id_categorie']?></td>
                 <td><a href="modifier.php?id=<?php echo $value['id']?>">Modifier</a></td> 
                 <td><a href="./suprimer.php?id=<?php echo $value['id']?>">Suprimer</a> </td> 
-                <td> <button id="<?php echo $value['id']?>" onclick="statut(<?php echo $value['id']?>)">terminée</button></td>
+                <td><button class="active<?php if($value['statut'] == "terminée"){echo " terminer";}?>" id="<?php echo $value['id']?>" onclick="statut(<?php echo $value['id']?>)"> <?php if($value['statut'] == "terminée"){echo " terminer";}else{echo "validé";}?></button></td>
                 
               </tr>
            <?php endforeach?>

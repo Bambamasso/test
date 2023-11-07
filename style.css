@@ -78,7 +78,6 @@ font-size:1.2rem ;
 width: 50px;
 cursor: pointer;
 border-radius: 50%;
-background:white
 }
 .header--wrapper{
     display: flex;
@@ -97,79 +96,4 @@ background:white
     font-display: flex;
     align-items: center;
     gap: 1rem;
-}
-
-  .form{
-    margin-top: 50px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .contenu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2em;
-    width: 100%;
-    max-width: 1200px;
-    /* background: #740727; */
-}
-
-.contenu form {
-    width: 100%;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5em;
-   
-}
-
-.contenu form .group {
-    display: flex;
-    flex-direction: column;
-}
-.contenu form label {
-    color: #05097a;
-    width: fit-content;
-}
-.contenu form input{
-    border: none;
-    outline: none;
-    border: 1px solid #d4d4d4;
-    padding: 10px;
-    resize: none;
-}
-.contenu form textarea{
-   outline: none;
-}
-
-.contenu form select{
-    outline: none;
- }
-
-.contenu form input[type='submit']{
-    cursor: pointer;
-}
-.contenu form input[type='submit'] {
-    width: 100%;
-    max-width: fit-content;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 0 auto;
-    background: #740727;
-    color: #9ff7f9;
-    text-align: center;
-}
-.contenu form input[type='submit']:hover {
-   transition: 1.5s;
-   background: white;
-   color: purple
-}
-
-  p{
-   text-align: center;
-  }
-p a{
-text-decoration: none;
-color:#05097a ;
 }

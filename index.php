@@ -17,5 +17,7 @@
             </ul>
         </nav>
     </div>
+
+    <div><p> Gérer vos tâche plus simplement grâce à notre gestionnaire de tâche</p></div>
 </body>
 </html>
